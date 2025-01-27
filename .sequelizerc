@@ -1,0 +1,6 @@
+{
+    "config": "config/config.json",
+    "models-path": "src/pizza/ingredients.model.ts",
+    "seeders-path": "seeders",
+    "migrations-path": "migrations/20250124113627-ingredient.js"
+}

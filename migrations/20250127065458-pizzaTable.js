@@ -15,12 +15,16 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       ingredientPrice: {
         type: Sequelize.INTEGER,
         allowNull: true,
         defaultValue: 0,
+      },
+      ingredientName: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

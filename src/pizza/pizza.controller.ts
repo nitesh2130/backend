@@ -8,9 +8,9 @@ export class PizzaController {
 
   @Post('/select')
   addingrediatnt(
-    @Body() orderDetails: orderDetailsDto,
+    @Body() OrderDetailsDto: orderDetailsDto,
     @Query('userId') userId: string,
   ) {
-    return this.PizzaService.selectIngredient(orderDetailsDto);
+    return this.PizzaService.selectIngredient(OrderDetailsDto);
   }
 }

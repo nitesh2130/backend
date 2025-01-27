@@ -1,3 +1,4 @@
+import { STRING } from 'sequelize';
 import { Ingredient } from './ingredients.model';
 import {
   AllowNull,
@@ -17,7 +18,7 @@ export class pizzaTable extends Model<pizzaTable> {
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
   })
   userId: number;
 
@@ -27,4 +28,10 @@ export class pizzaTable extends Model<pizzaTable> {
     defaultValue: 0,
   })
   ingredientPrice: number;
+
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    allowNull: true,
+  })
+  ingredientName: string[];
 }
