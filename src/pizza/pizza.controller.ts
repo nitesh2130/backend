@@ -1,5 +1,5 @@
 import { PizzaService } from './pizza.service';
-import { orderDetailsDto } from './DTO/orderDetails.dto';
+import { OrderDetailsDto } from './DTO/orderDetails.dto';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 
 @Controller('/pizza')
@@ -8,14 +8,14 @@ export class PizzaController {
 
   @Post('/select')
   addingrediatnt(
-    @Body() OrderDetailsDto: orderDetailsDto,
+    @Body() orderDetailsDto: OrderDetailsDto,
     @Query('userId') userId: string,
   ) {
-    return this.PizzaService.selectIngredient(OrderDetailsDto);
+    return this.PizzaService.selectIngredient(orderDetailsDto, userId);
   }
 
   //route for the fetch all ingediants of pizza
-  @Get('/AllIngredient')
+  @Get('/')
   getAllIngredient() {
     return this.PizzaService.getAllIngredients();
   }

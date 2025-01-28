@@ -3,13 +3,11 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PizzaService } from './pizza.service';
 import { PizzaController } from './pizza.controller';
-import { pizzaTable } from './pizzaTable.model';
+import { Pizza } from './pizzaTable.model';
 import { IngredientInPizza } from './IngredientInPizza.model';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([Ingredient, pizzaTable, IngredientInPizza]),
-  ],
+  imports: [SequelizeModule.forFeature([Ingredient, Pizza])],
   providers: [PizzaService],
   controllers: [PizzaController],
 })

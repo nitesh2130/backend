@@ -8,8 +8,9 @@ import { UserModule } from './user/user.module';
 import { PizzaController } from './pizza/pizza.controller';
 import { PizzaService } from './pizza/pizza.service';
 import { PizzaModule } from './pizza/pizza.module';
+import { CartAndOrderModule } from './cart-and-order/cart-and-order.module';
 @Module({
-  imports: [DataBaseModule, UserModule, PizzaModule],
+  imports: [DataBaseModule, UserModule, PizzaModule, CartAndOrderModule],
   controllers: [AppController, PizzaController],
   providers: [AppService, DatabaseService, PizzaService], // Add the DatabaseService
 })

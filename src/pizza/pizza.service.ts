@@ -1,50 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { PizzaModule } from './pizza.module';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Ingredient } from './ingredients.model';
-import { pizzaTable } from './pizzaTable.model';
-import { orderDetailsDto } from './DTO/orderDetails.dto';
-import { find, ignoreElements } from 'rxjs';
+import { Pizza } from './pizzaTable.model';
+
+import { OrderDetailsDto } from './DTO/orderDetails.dto';
+import { find } from 'rxjs';
 import { create } from 'domain';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class PizzaService {
+  constructor(
+    @InjectModel(Pizza)
+    private readonly PizzaModel: typeof Pizza,
+  ) {}
   pizzaTable: any;
-  async selectIngredient(OrderDetailsDto: orderDetailsDto) {
-    const { pizzaBasePrice, userId, ingredientPrice, ingredientName } =
-      OrderDetailsDto;
+  async selectIngredient(orderDetailsDto: OrderDetailsDto, userId: string) {
+    const { pizzaBasePrice, ingredientName } = orderDetailsDto;
 
-    if (ingredientName === null || ingredientName === undefined) {
-      throw new Error('ingedient is not available');
+    console.log(orderDetailsDto);
+    console.log(userId);
+    if (!pizzaBasePrice || !userId || !ingredientName) {
+      throw new BadRequestException('Ingredient data is not available');
     }
 
-    const newObj = {
-      pizzaBasePrice: pizzaBasePrice,
-      userId: userId,
-      ingredientPrice: 0,
-      ingredientName: ingredientName,
-    };
-    //now i am checking this feild is required, but DTO is check this condition also
-    // if (!pizzaBasePrice || !userId || !ingredientPrice || ingredientName) {
-    //   throw new Error('Please all feijd are required ');
-    // }
+    let ingredientPriceTotal = 0;
 
-    let customprice = 0;
-
-    const customizePrice = newObj.ingredientName.map(async (item) => {
+    ingredientName.map(async (item) => {
       const IngredientOnce = await Ingredient.findOne({
         where: { ingredientItem: item },
       });
       if (IngredientOnce) {
-        customprice += IngredientOnce.ingredientPrice;
+        ingredientPriceTotal += IngredientOnce.ingredientPrice;
       }
     });
 
-    newObj.ingredientPrice = customprice;
-
-    const newPizza = new this.pizzaTable.create({
+    ingredientPriceTotal += pizzaBasePrice;
+    console.log(ingredientPriceTotal);
+    const newPizza = await new this.pizzaTable.create({
       pizzaBasePrice,
       userId,
       ingredientName,
-      customprice,
+      ingredientPrice: ingredientPriceTotal,
     });
 
     return newPizza;

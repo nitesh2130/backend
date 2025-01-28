@@ -8,8 +8,11 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-@Table
-export class pizzaTable extends Model<pizzaTable> {
+@Table({
+  tableName: 'Pizza',
+  timestamps: true,
+})
+export class Pizza extends Model<Pizza> {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
