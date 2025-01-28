@@ -1,8 +1,10 @@
+import { find } from 'rxjs';
 import { Ingredient } from './../pizza/ingredients.model';
 import { Pizza } from 'src/pizza/pizzaTable.model';
 import { CartDto } from './DTO/cart.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Cart } from './cart.model';
+import { where } from 'sequelize';
 
 @Injectable()
 export class CartAndOrderService {
@@ -33,7 +35,19 @@ export class CartAndOrderService {
   }
 
   //Veiw all item of Cart
-  veiwAllCartItem() {}
+  async veiwAllCartItem(userId: any) {
+    const AllCart = await new this.Cart.find({
+      where: {
+        userId: userId,
+      },
+    });
+
+    if (!AllCart) {
+      throw new BadRequestException('Cart are not availble for this user');
+    }
+
+    return AllCart;
+  }
 
   //place order to the user
   placeOrder() {}
