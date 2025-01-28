@@ -13,5 +13,4 @@ export class Ingredient extends Model<Ingredient> {
     allowNull: false,
   })
   ingredientPrice: number;
-  price: number;
 }

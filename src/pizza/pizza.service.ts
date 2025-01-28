@@ -34,7 +34,7 @@ export class PizzaService {
         where: { ingredientItem: item },
       });
       if (IngredientOnce) {
-        customprice += IngredientOnce.price;
+        customprice += IngredientOnce.ingredientPrice;
       }
     });
 
@@ -50,5 +50,12 @@ export class PizzaService {
     return newPizza;
   }
 
-  IngredientData() {}
+  //to get all ingerdient for the user
+  async getAllIngredients() {
+    const allIngredients = await Ingredient.findAll();
+    if (allIngredients.length === 0) {
+      throw new Error('not ingredient have Available');
+    }
+    return allIngredients;
+  }
 }

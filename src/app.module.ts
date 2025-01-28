@@ -8,11 +8,9 @@ import { UserModule } from './user/user.module';
 import { PizzaController } from './pizza/pizza.controller';
 import { PizzaService } from './pizza/pizza.service';
 import { PizzaModule } from './pizza/pizza.module';
-import { SeedService } from './seed/seed/seed.service';
-import { SeedModule } from './seed/seed.module';
 @Module({
-  imports: [DataBaseModule, UserModule, PizzaModule, SeedModule],
+  imports: [DataBaseModule, UserModule, PizzaModule],
   controllers: [AppController, PizzaController],
-  providers: [AppService, DatabaseService, PizzaService, SeedService], // Add the DatabaseService
+  providers: [AppService, DatabaseService, PizzaService], // Add the DatabaseService
 })
 export class AppModule {}
