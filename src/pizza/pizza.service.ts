@@ -1,21 +1,16 @@
-import { PizzaModule } from './pizza.module';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Ingredient } from './ingredients.model';
-import { Pizza } from './pizzaTable.model';
-
+import { Pizza } from './pizza.model';
 import { OrderDetailsDto } from './DTO/orderDetails.dto';
-import { find } from 'rxjs';
-import { create } from 'domain';
 import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class PizzaService {
   constructor(
     @InjectModel(Pizza)
-    private readonly PizzaModel: typeof Pizza,
+    private readonly pizzaModel: typeof Pizza,
   ) {}
-  pizzaTable: any;
-  async selectIngredient(orderDetailsDto: OrderDetailsDto, userId: string) {
+  async selectIngredient(orderDetailsDto: OrderDetailsDto, userId: number) {
     const { pizzaBasePrice, ingredientName } = orderDetailsDto;
 
     console.log(orderDetailsDto);
@@ -37,12 +32,14 @@ export class PizzaService {
 
     ingredientPriceTotal += pizzaBasePrice;
     console.log(ingredientPriceTotal);
-    const newPizza = await new this.pizzaTable.create({
+
+    const PizzaInNew = {
       pizzaBasePrice,
       userId,
       ingredientName,
       ingredientPrice: ingredientPriceTotal,
-    });
+    } as Pizza;
+    const newPizza = await this.pizzaModel.create(PizzaInNew);
 
     return newPizza;
   }

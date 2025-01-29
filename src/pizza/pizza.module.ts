@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PizzaService } from './pizza.service';
 import { PizzaController } from './pizza.controller';
-import { Pizza } from './pizzaTable.model';
+import { Pizza } from './pizza.model';
 import { IngredientInPizza } from './IngredientInPizza.model';
 
 @Module({

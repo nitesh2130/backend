@@ -1,6 +1,6 @@
 import { find } from 'rxjs';
 import { Ingredient } from './../pizza/ingredients.model';
-import { Pizza } from 'src/pizza/pizzaTable.model';
+import { Pizza } from 'src/pizza/pizza.model';
 import { CartDto } from './DTO/cart.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Cart } from './cart.model';

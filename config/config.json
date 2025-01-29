@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "postgres",
-    "password": "Nitesh@7877",
-    "database": "Pizza",
+    "password": "pizza_password",
+    "database": "pizza_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "Nitesh@7877",
-    "database": "Pizza",
+    "password": "pizza_password",
+    "database": "pizza_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "Nitesh@7877",
-    "database": "Pizza",
+    "password": "pizza_password",
+    "database": "pizza_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

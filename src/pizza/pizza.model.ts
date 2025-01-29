@@ -21,7 +21,7 @@ export class Pizza extends Model<Pizza> {
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: true,
+    allowNull: false,
   })
   userId: number;
 

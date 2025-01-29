@@ -8,10 +8,10 @@ import { Module } from '@nestjs/common';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'Nitesh@7877',
-      database: 'Pizza',
+      password: 'pizza_password',
+      database: 'pizza_db',
       autoLoadModels: true,
-      synchronize: true,
+      synchronize: false,
     }),
   ],
 })

@@ -9,7 +9,7 @@ export class PizzaController {
   @Post('/select')
   addingrediatnt(
     @Body() orderDetailsDto: OrderDetailsDto,
-    @Query('userId') userId: string,
+    @Query() userId: number,
   ) {
     return this.PizzaService.selectIngredient(orderDetailsDto, userId);
   }
