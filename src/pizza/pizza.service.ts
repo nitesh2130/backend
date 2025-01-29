@@ -9,46 +9,53 @@ export class PizzaService {
   constructor(
     @InjectModel(Pizza)
     private readonly pizzaModel: typeof Pizza,
+    @InjectModel(Ingredient)
+    private readonly ingredientModel: typeof Ingredient,
   ) {}
-  async selectIngredient(orderDetailsDto: OrderDetailsDto, userId: number) {
-    const { pizzaBasePrice, ingredientName } = orderDetailsDto;
 
-    console.log(orderDetailsDto);
-    console.log(userId);
-    if (!pizzaBasePrice || !userId || !ingredientName) {
+  async selectIngredient(
+    orderDetailsDto: OrderDetailsDto,
+    parsedUserId: number,
+  ) {
+    const { pizzaBasePrice, ingredientName } = orderDetailsDto;
+    console.log(parsedUserId);
+
+    if (!pizzaBasePrice || !parsedUserId || !ingredientName) {
       throw new BadRequestException('Ingredient data is not available');
     }
 
-    let ingredientPriceTotal = 0;
+    let totalPrice = pizzaBasePrice;
 
-    ingredientName.map(async (item) => {
-      const IngredientOnce = await Ingredient.findOne({
-        where: { ingredientItem: item },
-      });
-      if (IngredientOnce) {
-        ingredientPriceTotal += IngredientOnce.ingredientPrice;
-      }
-    });
+    // Use Promise.all to handle async operations properly
+    const ingredients = await Promise.all(
+      ingredientName.map(async (item) => {
+        //console.log(item, ' this  is item');
+        const ingredient = await this.ingredientModel.findOne({
+          where: { ingredientItem: item },
+        });
+        console.log(ingredient, 'this is ingredient');
+        if (ingredient) {
+          totalPrice += ingredient.ingredientPrice;
+        }
+        return ingredient;
+      }),
+    );
 
-    ingredientPriceTotal += pizzaBasePrice;
-    console.log(ingredientPriceTotal);
-
-    const PizzaInNew = {
+    // Create new pizza with total price
+    const newPizza = await this.pizzaModel.create({
       pizzaBasePrice,
-      userId,
+      parsedUserId,
       ingredientName,
-      ingredientPrice: ingredientPriceTotal,
-    } as Pizza;
-    const newPizza = await this.pizzaModel.create(PizzaInNew);
+      ingredientPrice: totalPrice,
+    });
 
     return newPizza;
   }
 
-  //to get all ingerdient for the user
   async getAllIngredients() {
-    const allIngredients = await Ingredient.findAll();
+    const allIngredients = await this.ingredientModel.findAll();
     if (allIngredients.length === 0) {
-      throw new Error('not ingredient have Available');
+      throw new BadRequestException('No ingredients are available');
     }
     return allIngredients;
   }

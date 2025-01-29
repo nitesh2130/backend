@@ -1,23 +1,32 @@
-// import { Model } from "sequelize";
 import {
-  AllowNull,
   Model,
   Column,
   Table,
   DataType,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { Pizza } from '../pizza/pizza.model';
 
 @Table({
   tableName: 'Cart',
   timestamps: true,
 })
-export class Cart extends Model<Cart> {
+export class Cart extends Model {
+  @Column({
+    type: DataType.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
+
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
   pizzaCount: number;
 
+  @ForeignKey(() => Pizza)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
@@ -31,8 +40,11 @@ export class Cart extends Model<Cart> {
   userId: number;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.FLOAT,
     allowNull: false,
   })
   totalPrice: number;
+
+  @BelongsTo(() => Pizza)
+  pizza: Pizza;
 }

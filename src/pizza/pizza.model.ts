@@ -1,7 +1,4 @@
-import { STRING } from 'sequelize';
-import { Ingredient } from './ingredients.model';
 import {
-  AllowNull,
   Column,
   DataType,
   Model,
@@ -12,7 +9,15 @@ import {
   tableName: 'Pizza',
   timestamps: true,
 })
-export class Pizza extends Model<Pizza> {
+export class Pizza extends Model {
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id: number;
+
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
@@ -30,11 +35,5 @@ export class Pizza extends Model<Pizza> {
     allowNull: true,
     defaultValue: 0,
   })
-  ingredientPrice: number;
-
-  @Column({
-    type: DataType.ARRAY(DataType.STRING),
-    allowNull: true,
-  })
-  ingredientName: string[];
+  totalPrice: number;
 }

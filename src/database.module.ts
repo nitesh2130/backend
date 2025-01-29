@@ -1,5 +1,9 @@
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Module } from '@nestjs/common';
+import { Pizza } from './pizza/pizza.model';
+import { Ingredient } from './pizza/ingredients.model';
+import { IngredientInPizza } from './pizza/IngredientInPizza.model';
+import { User } from './user/user.model';
 
 @Module({
   imports: [
@@ -10,8 +14,10 @@ import { Module } from '@nestjs/common';
       username: 'postgres',
       password: 'pizza_password',
       database: 'pizza_db',
-      autoLoadModels: true,
-      synchronize: false,
+      models: [Pizza, Ingredient, User],
+      // autoLoadModels: false,
+      // models: [User],
+      // synchronize: true,
     }),
   ],
 })

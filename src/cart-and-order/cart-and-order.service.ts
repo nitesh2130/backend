@@ -1,30 +1,30 @@
-import { find } from 'rxjs';
-import { Ingredient } from './../pizza/ingredients.model';
-import { Pizza } from 'src/pizza/pizza.model';
-import { CartDto } from './DTO/cart.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Pizza } from '../pizza/pizza.model';
 import { Cart } from './cart.model';
-import { where } from 'sequelize';
+import { CartDto } from './DTO/cart.dto';
 
 @Injectable()
 export class CartAndOrderService {
-  Cart: any;
-  //add pizza in the Cart
-  async addToCart(cartDto: CartDto, userId: any) {
+  constructor(
+    @InjectModel(Cart)
+    private readonly cartModel: typeof Cart,
+    @InjectModel(Pizza)
+    private readonly pizzaModel: typeof Pizza,
+  ) {}
+
+  async addToCart(cartDto: CartDto, userId: number) {
     const { pizzaCount, pizzaId } = cartDto;
-    let totalPrice = 0;
 
-    const pizzaOnce = await Pizza.findByPk(pizzaId);
-
+    const pizzaOnce = await this.pizzaModel.findByPk(pizzaId);
     if (!pizzaOnce) {
-      return new BadRequestException('The pizza does not exist');
+      throw new BadRequestException('The pizza does not exist');
     }
 
-    if (pizzaCount > 1) {
-      totalPrice = pizzaCount * pizzaOnce.ingredientPrice;
-    }
+    // Calculate total price based on pizza's total price and quantity
+    const totalPrice = pizzaCount * pizzaOnce.totalPrice;
 
-    const newCart = await new this.Cart.create({
+    const newCart = await this.cartModel.create({
       pizzaCount,
       pizzaId,
       userId,
@@ -34,19 +34,17 @@ export class CartAndOrderService {
     return newCart;
   }
 
-  //Veiw all item of Cart
-  async veiwAllCartItem(userId: any) {
-    const AllCart = await new this.Cart.find({
-      where: {
-        userId: userId,
-      },
+  async viewAllCartItems(userId: number) {
+    const allCartItems = await this.cartModel.findAll({
+      where: { userId },
+      include: [{ model: Pizza }],
     });
 
-    if (!AllCart) {
-      throw new BadRequestException('Cart are not availble for this user');
+    if (!allCartItems.length) {
+      throw new BadRequestException('Cart is empty for this user');
     }
 
-    return AllCart;
+    return allCartItems;
   }
 
   //place order to the user

@@ -3,21 +3,30 @@
     "username": "postgres",
     "password": "pizza_password",
     "database": "pizza_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
   },
   "test": {
     "username": "postgres",
     "password": "pizza_password",
     "database": "pizza_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432,
+    "dialectOptions": {
+      "ssl": false
+    }
   },
   "production": {
     "username": "postgres",
     "password": "pizza_password",
     "database": "pizza_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432,
+    "dialectOptions": {
+      "ssl": false
+    }
   }
 }

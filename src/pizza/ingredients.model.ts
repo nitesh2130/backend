@@ -1,10 +1,21 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table
-export class Ingredient extends Model<Ingredient> {
+@Table({
+  tableName: 'Ingredients',
+  timestamps: true,
+})
+export class Ingredient extends Model {
+  // @Column({
+  //   type: DataType.INTEGER,
+  //   autoIncrement: true,
+  //   primaryKey: true,
+  // })
+  // id: number;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   })
   ingredientItem: string;
 
